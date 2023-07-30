@@ -223,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
     TextEditingController taxController = TextEditingController();
 
     // Retrieve the current values from the Hive box
-    Gvalues currentValues = boxGvalues.get(0) ?? Gvalues(tax: 0, trn: '');
+    Gvalues currentValues = boxGvalues.getAt(0) ?? Gvalues(tax: 0, trn: '');
 
     trnController.text = currentValues.trn;
     taxController.text = currentValues.tax.toString();
@@ -272,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
 
                 // Store the updated values in the Hive box
-                await boxGvalues.put(0, updatedValues);
+                await boxGvalues.putAt(0, updatedValues);
 
                 Navigator.of(context).pop();
               },

@@ -11,6 +11,7 @@ import 'package:rms/Hive/gvalues.dart';
 import 'package:rms/Hive/menu.dart';
 import 'package:rms/Hive/monthlySales.dart';
 import 'package:rms/Home_screen.dart';
+import 'package:path/path.dart' as path;
 
 import 'boxes.dart';
 
@@ -20,8 +21,14 @@ void main() async {
   // Get the application documents directory
   Directory appDocumentsDir = await getApplicationDocumentsDirectory();
 
-  // Concatenate the Hive box name to the document directory path
-  String boxPath = appDocumentsDir.path;
+  // Specify the subdirectory name
+  String subDirectoryName = "rmsdata";
+
+  // Concatenate the subdirectory name to the document directory path
+  String boxPath = path.join(appDocumentsDir.path, subDirectoryName);
+
+  // Create the subdirectory if it doesn't exist
+  Directory(boxPath).createSync(recursive: true);
 
   print(boxPath);
 
@@ -42,6 +49,10 @@ void main() async {
   boxCategorys = await Hive.openBox<MenuCategory>('menuCategoryBox');
   boxEmployees = await Hive.openBox<Employee>('employeeBox');
   boxGvalues = await Hive.openBox<Gvalues>('gvaluesBox');
+
+  if (boxGvalues.isEmpty) {
+    boxGvalues.add(Gvalues(tax: 0, trn: '00000'));
+  }
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
